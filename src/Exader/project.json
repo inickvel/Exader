@@ -1,0 +1,24 @@
+{
+    "version": "2016.0.0-*",
+    "compilationOptions": {
+    },
+    "compile": "**/*.cs",
+
+    "dependencies": {
+    },
+
+    "frameworks": {
+        "net45": {
+            "dependencies": {
+                "JetBrains.Annotations": "10.0.0.0"
+            },
+            "frameworkAssemblies": {
+            },
+            "compilationOptions": {
+                "define": [
+                    "NET45"
+                ]
+            }
+         }
+    }
+}
