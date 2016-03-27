@@ -3,6 +3,16 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.5": {
+      "Exader/2016.0.0-beta1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "JetBrains.Annotations": "10.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.Xml"
+        ]
+      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -14,6 +24,16 @@
       }
     },
     ".NETFramework,Version=v3.5": {
+      "Exader/2016.0.0-beta1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v3.5",
+        "dependencies": {
+          "JetBrains.Annotations": "10.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.Xml"
+        ]
+      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -25,6 +45,18 @@
       }
     },
     "Silverlight,Version=v5.0": {
+      "Exader/2016.0.0-beta1": {
+        "type": "project",
+        "framework": "Silverlight,Version=v5.0",
+        "dependencies": {
+          "JetBrains.Annotations": "10.0.0"
+        },
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System",
+          "System.Core"
+        ]
+      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -36,6 +68,16 @@
       }
     },
     ".NETFramework,Version=v4.5/win7-x86": {
+      "Exader/2016.0.0-beta1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "JetBrains.Annotations": "10.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.Xml"
+        ]
+      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -47,6 +89,16 @@
       }
     },
     ".NETFramework,Version=v4.5/win7-x64": {
+      "Exader/2016.0.0-beta1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "JetBrains.Annotations": "10.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.Xml"
+        ]
+      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -58,6 +110,16 @@
       }
     },
     ".NETFramework,Version=v3.5/win7-x86": {
+      "Exader/2016.0.0-beta1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v3.5",
+        "dependencies": {
+          "JetBrains.Annotations": "10.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.Xml"
+        ]
+      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -69,6 +131,16 @@
       }
     },
     ".NETFramework,Version=v3.5/win7-x64": {
+      "Exader/2016.0.0-beta1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v3.5",
+        "dependencies": {
+          "JetBrains.Annotations": "10.0.0"
+        },
+        "frameworkAssemblies": [
+          "System.Xml"
+        ]
+      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -80,6 +152,18 @@
       }
     },
     "Silverlight,Version=v5.0/win7-x86": {
+      "Exader/2016.0.0-beta1": {
+        "type": "project",
+        "framework": "Silverlight,Version=v5.0",
+        "dependencies": {
+          "JetBrains.Annotations": "10.0.0"
+        },
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System",
+          "System.Core"
+        ]
+      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -91,6 +175,18 @@
       }
     },
     "Silverlight,Version=v5.0/win7-x64": {
+      "Exader/2016.0.0-beta1": {
+        "type": "project",
+        "framework": "Silverlight,Version=v5.0",
+        "dependencies": {
+          "JetBrains.Annotations": "10.0.0"
+        },
+        "frameworkAssemblies": [
+          "mscorlib",
+          "System",
+          "System.Core"
+        ]
+      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -103,10 +199,15 @@
     }
   },
   "libraries": {
+    "Exader/2016.0.0-beta1": {
+      "type": "project",
+      "path": "../Exader/project.json"
+    },
     "JetBrains.Annotations/10.0.0": {
       "type": "package",
       "sha512": "vyadsDFnDDbR2NK3P++l9AA5ogM+cWlj8kQl8NV9m+LZyEYxjQndZZL/noqb5g8pYpCNellecxtVFdUZ979UWg==",
       "files": [
+        "JetBrains.Annotations.10.0.0.nupkg",
         "JetBrains.Annotations.10.0.0.nupkg.sha512",
         "JetBrains.Annotations.nuspec",
         "lib/net20/JetBrains.Annotations.dll",
@@ -120,6 +221,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "Exader ",
       "JetBrains.Annotations >= 10.0.0"
     ],
     ".NETFramework,Version=v4.5": [

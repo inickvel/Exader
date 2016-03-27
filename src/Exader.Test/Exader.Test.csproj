@@ -152,20 +152,6 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Exader.IO.Net45\Exader.IO.Net45.csproj">
-      <Project>{36eb59c1-a717-44c1-9ac4-ba0f2430ccb1}</Project>
-      <Name>Exader.IO.Net45</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Exader.Net45\Exader.Net45.csproj">
-      <Project>{6d039207-2656-45af-8051-2c4133aa9a58}</Project>
-      <Name>Exader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Exader.Reflection.Net45\Exader.Reflection.Net45.csproj">
-      <Project>{c94705db-e4ad-4e29-99ad-900f6d12ee13}</Project>
-      <Name>Exader.Reflection.Net45</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

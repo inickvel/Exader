@@ -1061,7 +1061,7 @@ namespace Exader
                 return string.Empty;
             }
 
-            if (charsToRemove == null || charsToRemove.Length == 0)
+            if (charsToRemove.IsNullOrEmpty())
             {
                 return self;
             }

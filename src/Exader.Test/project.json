@@ -1,0 +1,31 @@
+{
+  "compilationOptions": {
+    "keyFile": "../../Exader.snk"
+  },
+
+  "dependencies": {
+    "Exader": "",
+    "Exader.IO": "",
+    "JetBrains.Annotations": "10.0.0.0",
+    "xunit": "2.1.0",
+    "xunit.runner.visualstudio": "2.1.0"
+  },
+
+  "frameworks": {
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Xml": "",
+        "System.Runtime": "",
+        "System.Threading.Tasks": ""
+      },
+      "dependencies": {
+        "Exader.Reflection": ""
+      },
+      "compilationOptions": {
+        "define": [
+          "NET45"
+        ]
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "version": "2016.0.0-beta1",
   "authors": [ "Dennis Apter" ],
-  "description": "Common utilities library",
+  "description": "File system utilities library",
   "iconUrl": "https://raw.githubusercontent.com/dennis-apter/Exader/master/Exader.png",
   "projectUrl": "https://github.com/dennis-apter/Exader",
   "repository": {
@@ -15,6 +15,7 @@
   },
 
   "dependencies": {
+    "Exader": "",
     "JetBrains.Annotations": "10.0.0.0"
   },
 

@@ -1,7 +1,7 @@
 {
   "version": "2016.0.0-beta1",
   "authors": [ "Dennis Apter" ],
-  "description": "Common utilities library",
+  "description": "Reflection utilities library",
   "iconUrl": "https://raw.githubusercontent.com/dennis-apter/Exader/master/Exader.png",
   "projectUrl": "https://github.com/dennis-apter/Exader",
   "repository": {
@@ -15,39 +15,17 @@
   },
 
   "dependencies": {
+    "Exader": "2016.0.0-*",
     "JetBrains.Annotations": "10.0.0.0"
   },
 
   "frameworks": {
     "net45": {
       "frameworkAssemblies": {
-        "System.Xml": ""
       },
       "compilationOptions": {
         "define": [
           "NET45"
-        ]
-      }
-    },
-    "net35": {
-      "frameworkAssemblies": {
-        "System.Xml": ""
-      },
-      "compilationOptions": {
-        "define": [
-          "NET35"
-        ]
-      }
-    },
-    "sl50": {
-      "frameworkAssemblies": {
-        "mscorlib": "5.0.5.0",
-        "System": "5.0.5.0",
-        "System.Core": "5.0.5.0"
-      },
-      "compilationOptions": {
-        "define": [
-          "SILVERLIGHT"
         ]
       }
     }
