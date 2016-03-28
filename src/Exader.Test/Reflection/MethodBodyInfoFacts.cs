@@ -19,6 +19,7 @@ namespace Exader.Reflection
         {
             const BindingFlags bf = BindingFlags.DeclaredOnly
                 | BindingFlags.Public
+                | BindingFlags.NonPublic
                 | BindingFlags.Static
                 | BindingFlags.Instance;
 
@@ -29,7 +30,10 @@ namespace Exader.Reflection
 
                 foreach (var method in type.GetMethods(bf))
                 {
-                    if (method.IsAbstract || method.ReturnType == typeof(void))
+                    if (method.IsAbstract
+                        || method.ReturnType == typeof(void)
+                        || method.Name.StartsWith("get_") 
+                        || method.Name.StartsWith("set_"))
                         continue;
 
                     bool isTaggedAsPure = false;
@@ -43,6 +47,9 @@ namespace Exader.Reflection
                     }
 
                     var body = method.GetMethodBodyInfo();
+                    if (body == null)
+                        continue;
+
                     if (body.ChangesState())
                     {
                         if (isTaggedAsPure)

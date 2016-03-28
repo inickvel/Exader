@@ -5,11 +5,13 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace Exader.Reflection
 {
     internal class MethodBodyInfo
     {
+        [CanBeNull]
         public static MethodBodyInfo Create(MethodInfo methodInfo)
         {
             MethodBody body = methodInfo.GetMethodBody();

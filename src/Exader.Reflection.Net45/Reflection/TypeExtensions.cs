@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace Exader.Reflection
 {
@@ -10,6 +11,7 @@ namespace Exader.Reflection
             return MethodBodyInfo.Create(type.GetMethod(name));
         }
 
+        [CanBeNull]
         internal static MethodBodyInfo GetMethodBodyInfo(this MethodInfo method)
         {
             return MethodBodyInfo.Create(method);
