@@ -347,7 +347,7 @@ namespace Exader.Reflection
         {
             public static OpCode InvertLoadLocal(OpCode loadOpCode)
             {
-                int index = LoadLocalOpCodes.IndexOf(loadOpCode);
+                int index = Array.IndexOf(LoadLocalOpCodes, loadOpCode);
                 if (0 <= index)
                 {
                     return StoreLocalOpCodes[index];

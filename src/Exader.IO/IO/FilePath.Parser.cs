@@ -527,16 +527,6 @@ namespace Exader.IO
                 return sep;
             }
 
-            [Conditional("DEBUG")]
-            private void Check(Stack<int> separators, int offset)
-            {
-                if (separators.Contains(offset))
-                {
-                    Debugger.Break();
-                    Debug.Fail("Item already exists");
-                }
-            }
-
             public FilePathParseErrorType ErrorType
             {
                 get { return _error; }

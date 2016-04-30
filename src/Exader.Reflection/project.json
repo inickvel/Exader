@@ -15,7 +15,6 @@
   },
 
   "dependencies": {
-    "Exader": "2016.0.0-*",
     "JetBrains.Annotations": "10.0.0.0"
   },
 

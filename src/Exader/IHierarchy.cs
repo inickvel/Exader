@@ -177,25 +177,6 @@ namespace Exader
             return root;
         }
 
-        public static string ToTreeString<T>(this IEnumerable<T> self, Func<T, string> toString = null)
-            where T : IHierarchy<T>
-        {
-            var buffer = new StringBuilder();
-            foreach (var root in self)
-            {
-                AppendTreeString(buffer, root, toString);
-            }
-
-            return buffer.ToString();
-        }
-
-        public static string ToTreeString<T>(this T self, Func<T, string> toString = null) where T : IHierarchy<T>
-        {
-            var buffer = new StringBuilder();
-            AppendTreeString(buffer, self, toString);
-            return buffer.ToString();
-        }
-
         private static IEnumerable<T> AncestorsCore<T>(T self, bool andSelf) where T : IHierarchy<T>
         {
             if (andSelf)
@@ -210,59 +191,6 @@ namespace Exader
 
                 ancestor = ancestor.Parent;
             }
-        }
-
-        private static void AppendTreeString<T>(StringBuilder buffer, T self, Func<T, string> toString) where T : IHierarchy<T>
-        {
-            if (!typeof(T).IsValueType && Equals(self, default(T)))
-            {
-                buffer.AppendLine("┬─ <null>");
-                return;
-            }
-
-            string displayString = toString == null ? Convert.ToString(self) : toString(self);
-
-            buffer.Append("┬ ").AppendLine(displayString);
-
-            if (self.Children == null) return;
-
-            var stack = new Stack<IEnumerator<T>>();
-            var en = self.Children.GetEnumerator();
-            do
-            {
-                if (en.MoveNext())
-                {
-                    if (!typeof(T).IsValueType && Equals(en.Current, default(T)))
-                    {
-                        buffer.Append("│".Repeat(stack.Count)).AppendLine("├─ <null>");
-                        continue;
-                    }
-
-                    displayString = toString == null ? Convert.ToString(en.Current) : toString(en.Current);
-
-                    buffer.Append("│".Repeat(stack.Count));
-                    buffer.Append("├")
-                        .Append(en.Current.IsLeaf() ? "─ " : "┬ ")
-                        .AppendLine(displayString);
-
-                    if (en.Current.Children == null) continue;
-
-                    stack.Push(en);
-                    en = en.Current.Children.GetEnumerator();
-                }
-                else
-                {
-                    if (0 < stack.Count)
-                    {
-                        en = stack.Pop();
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-            while (true);
         }
 
         private static IEnumerable<T> DescendantsCore<T>(T self, bool andSelf) where T : IHierarchy<T>

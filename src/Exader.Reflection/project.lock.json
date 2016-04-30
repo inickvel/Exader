@@ -3,16 +3,6 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v4.5": {
-      "Exader/1.0.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5",
-        "dependencies": {
-          "JetBrains.Annotations": "10.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Xml"
-        ]
-      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -24,16 +14,6 @@
       }
     },
     ".NETFramework,Version=v4.5/win7-x86": {
-      "Exader/1.0.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5",
-        "dependencies": {
-          "JetBrains.Annotations": "10.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Xml"
-        ]
-      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -45,16 +25,6 @@
       }
     },
     ".NETFramework,Version=v4.5/win7-x64": {
-      "Exader/1.0.0": {
-        "type": "project",
-        "framework": ".NETFramework,Version=v4.5",
-        "dependencies": {
-          "JetBrains.Annotations": "10.0.0"
-        },
-        "frameworkAssemblies": [
-          "System.Xml"
-        ]
-      },
       "JetBrains.Annotations/10.0.0": {
         "type": "package",
         "compile": {
@@ -67,10 +37,6 @@
     }
   },
   "libraries": {
-    "Exader/1.0.0": {
-      "type": "project",
-      "path": "../Exader/project.json"
-    },
     "JetBrains.Annotations/10.0.0": {
       "type": "package",
       "sha512": "vyadsDFnDDbR2NK3P++l9AA5ogM+cWlj8kQl8NV9m+LZyEYxjQndZZL/noqb5g8pYpCNellecxtVFdUZ979UWg==",
@@ -89,7 +55,6 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Exader >= 2016.0.0-*",
       "JetBrains.Annotations >= 10.0.0"
     ],
     ".NETFramework,Version=v4.5": []

@@ -97,7 +97,6 @@ namespace Exader
                     }
 
                 case DatePart.Month:
-                    Debug.Assert(1 == date.Day);
                     return date.AddMonths(value);
 
                 case DatePart.Quarter:

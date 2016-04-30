@@ -17,14 +17,14 @@ namespace Exader
 #endif
         [NotNull]
         [Pure]
-        public static string Capitalize(this string self, CultureInfo culture = null)
+        public static string Capitalize(this string self)
         {
             if (string.IsNullOrEmpty(self))
             {
                 return string.Empty;
             }
 
-            char upper = char.ToUpper(self[0], culture ?? CultureInfo.InvariantCulture);
+            char upper = char.ToUpper(self[0]);
             if (self[0] == upper)
             {
                 return self;
@@ -152,11 +152,10 @@ namespace Exader
 
         [NotNull]
         [Pure]
-        public static string CollapseWhiteSpacesToCamelHumps(this string self, CultureInfo culture = null)
+        public static string CollapseWhiteSpacesToCamelHumps(this string self)
         {
-            if (string.IsNullOrEmpty(self)) return string.Empty;
-
-            if (culture == null) culture = CultureInfo.InvariantCulture;
+            if (string.IsNullOrEmpty(self))
+                return string.Empty;
 
             var buffer = new StringBuilder();
             bool hump = true;
@@ -173,7 +172,7 @@ namespace Exader
                     {
                         hump = false;
 
-                        buffer.Append(c.ToUpper(culture));
+                        buffer.Append(c.ToUpper());
                     }
                     else
                     {
@@ -261,7 +260,7 @@ namespace Exader
         [Pure]
         public static bool ContainsIgnoreCase(this string self, string subString)
         {
-            return 0 <= self.IndexOf(subString, 0, StringComparison.InvariantCultureIgnoreCase);
+            return 0 <= self.IndexOf(subString, 0, StringComparison.OrdinalIgnoreCase);
         }
         
         [Pure]
@@ -286,14 +285,14 @@ namespace Exader
 
         [NotNull]
         [Pure]
-        public static string Decapitalize(this string self, CultureInfo culture = null)
+        public static string Decapitalize(this string self)
         {
             if (string.IsNullOrEmpty(self))
             {
                 return string.Empty;
             }
 
-            char lower = char.ToLower(self[0], culture ?? CultureInfo.InvariantCulture);
+            char lower = char.ToLower(self[0]);
             if (self[0] == lower)
             {
                 return self;
@@ -380,7 +379,7 @@ namespace Exader
         {
             if (null == self) return false;
 
-            return self.EndsWith(end, StringComparison.InvariantCultureIgnoreCase);
+            return self.EndsWith(end, StringComparison.OrdinalIgnoreCase);
         }
 
 #if SILVERLIGHT || NET45
@@ -399,7 +398,7 @@ namespace Exader
                 return self;
             }
 
-            return end.ToString(CultureInfo.InvariantCulture);
+            return end.ToString();
         }
 
 #if SILVERLIGHT || NET45
@@ -456,7 +455,7 @@ namespace Exader
                 return self;
             }
 
-            return start.ToString(CultureInfo.InvariantCulture);
+            return start.ToString();
         }
 
 #if SILVERLIGHT || NET45
@@ -503,7 +502,7 @@ namespace Exader
         [Pure]
         public static bool EqualsIgnoreCase(this string self, string other)
         {
-            return (string.Compare(self, other, CultureInfo.InvariantCulture, CompareOptions.IgnoreCase) == 0);
+            return StringComparer.OrdinalIgnoreCase.Compare(self, other) == 0;
         }
 
 #if SILVERLIGHT || NET45
@@ -589,7 +588,7 @@ namespace Exader
                 count = self.Length - startIndex;
             }
 
-            return self.IndexOf(other, startIndex, count, StringComparison.InvariantCultureIgnoreCase);
+            return self.IndexOf(other, startIndex, count, StringComparison.OrdinalIgnoreCase);
         }
 
         public static string InsertLinePrefix(this string self, string prefix)
@@ -650,7 +649,7 @@ namespace Exader
 #endif
         public static bool JoinsWithIgnoreCase(this string self, string subString)
         {
-            var index = self.IndexOf(subString, 0, StringComparison.InvariantCultureIgnoreCase);
+            var index = self.IndexOf(subString, 0, StringComparison.OrdinalIgnoreCase);
             return 0 < index && index < self.Length - 1;
         }
 
@@ -672,7 +671,7 @@ namespace Exader
 
             if (count == int.MaxValue) count = startIndex + 1;
 
-            return self.LastIndexOf(other, startIndex, count, StringComparison.InvariantCultureIgnoreCase);
+            return self.LastIndexOf(other, startIndex, count, StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -746,7 +745,7 @@ namespace Exader
             }
 
             return valuable
-                ? mark.ToString(CultureInfo.InvariantCulture) + mark
+                ? mark.ToString() + mark
                 : string.Empty;
         }
 
@@ -771,7 +770,7 @@ namespace Exader
             }
 
             return valuable
-                ? open.ToString(CultureInfo.InvariantCulture) + close
+                ? open.ToString() + close
                 : string.Empty;
         }
 
@@ -1098,7 +1097,7 @@ namespace Exader
             var buffer = new StringBuilder();
             foreach (char c in self)
             {
-                switch (char.GetUnicodeCategory(c))
+                switch (CharUnicodeInfo.GetUnicodeCategory(c))
                 {
                     case UnicodeCategory.Control:
                     case UnicodeCategory.Format:
@@ -1185,7 +1184,7 @@ namespace Exader
                 return false;
             }
 
-            return self.StartsWith(start, StringComparison.InvariantCultureIgnoreCase);
+            return self.StartsWith(start, StringComparison.OrdinalIgnoreCase);
         }
 
 #if SILVERLIGHT || NET45
@@ -1315,7 +1314,7 @@ namespace Exader
 
         public static string Unindent(this string self, int level = 1, char indent = '\t', int indentSize = 1)
         {
-            var prefix = indent.ToString(CultureInfo.InvariantCulture).PadLeft(level * indentSize, indent);
+            var prefix = indent.ToString().PadLeft(level * indentSize, indent);
             return RemoveLinePrefix(self, prefix);
         }
 
@@ -1457,7 +1456,7 @@ namespace Exader
             return builder == null ? self : builder.ToString();
         }
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETCORE
         /// <summary>
         /// Converts the specified string to titlecase.
         /// </summary>
@@ -1494,9 +1493,6 @@ namespace Exader
 
         [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
         [System.Runtime.InteropServices.ComVisible(true)]
-#if !SILVERLIGHT
-        [Serializable]
-#endif
         public struct IndexedCharEnumerator : IEnumerator<char>
         {
             private string _source;
@@ -1529,8 +1525,10 @@ namespace Exader
                     return true;
                 }
                 else
+                {
                     _index = _source.Length;
-                return false;
+                    return false;
+                }
 
             }
 

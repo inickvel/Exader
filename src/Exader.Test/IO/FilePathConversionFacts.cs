@@ -33,16 +33,6 @@ namespace Exader.IO
             Assert.Throws<ArgumentNullException>(() => FilePath.Combine(a, b));
         }
 
-        [Fact]
-        public void ToAbsoluteString()
-        {
-            var currentDir = Environment.CurrentDirectory;
-            var pathInfo = FilePath.Parse("f.e");
-
-            Assert.False(pathInfo.IsAbsolute);
-            Assert.Equal(currentDir + @"\f.e", pathInfo.ToAbsoluteString());
-        }
-
         [Theory]
         [InlineData("c:/d/sd/", "d:/d/")]
         [InlineData("/d/sd/", "d:/d/")]

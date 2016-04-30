@@ -7,10 +7,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using JetBrains.Annotations;
+using System.Diagnostics.Contracts;
 
 namespace Exader.IO
 {
-    [Serializable]
     [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
     public sealed partial class FilePath : IEquatable<FilePath>
     {
@@ -53,7 +53,6 @@ namespace Exader.IO
         /// Создает экземпляр <see cref="FilePath"/>
         /// для описания фалового пути к текущей директории.
         /// </summary>
-        [DebuggerStepThrough]
         public FilePath()
         {
             _driveOrHost = "";
@@ -310,7 +309,7 @@ namespace Exader.IO
         {
             fileName = fileName.Trim();
             var sb = new StringBuilder();
-            var parts = fileName.Split(Path.DirectorySeparatorChar);
+            var parts = fileName.Split(DirectorySeparatorChar);
             for (int i = 0; i < parts.Length; i++)
             {
                 var part = parts[i].Trim();
@@ -335,7 +334,8 @@ namespace Exader.IO
 
             return sb.ToString();
         }
-
+        
+#if !NETCORE
         public FilePath ToAbsolute()
         {
             return IsAbsolute ? this : Parse(ToAbsoluteString());
@@ -348,6 +348,7 @@ namespace Exader.IO
 
             return Path.GetFullPath(_path == "" ? "." : _path);
         }
+#endif
 
         private bool TryToRelativeCore(string basePath, string baseRoot, string baseLocalPath, out FilePath relativePath)
         {
@@ -380,8 +381,8 @@ namespace Exader.IO
 
         private static string GetRelativePath(string path, string basePath)
         {
-            var basePathParts = basePath.SplitAndRemoveEmpties(Path.DirectorySeparatorChar);
-            var pathParts = path.Split(Path.DirectorySeparatorChar);
+            var basePathParts = basePath.SplitAndRemoveEmpties(DirectorySeparatorChar);
+            var pathParts = path.Split(DirectorySeparatorChar);
             int partsCount = Math.Min(basePathParts.Length, pathParts.Length);
             int samePartCount = 0;
             for (int i = 0; i < partsCount; i++)
@@ -403,14 +404,14 @@ namespace Exader.IO
             for (int i = samePartCount; i < basePathParts.Length; i++)
             {
                 relativePath.Append("..");
-                relativePath.Append(Path.DirectorySeparatorChar);
+                relativePath.Append(DirectorySeparatorChar);
             }
 
             for (int i = samePartCount; i < pathParts.Length; i++)
             {
                 if (samePartCount < i)
                 {
-                    relativePath.Append(Path.DirectorySeparatorChar);
+                    relativePath.Append(DirectorySeparatorChar);
                 }
 
                 relativePath.Append(pathParts[i]);
@@ -686,8 +687,8 @@ namespace Exader.IO
             int start = 0;
             int end = 0;
 
-            var self = DirectoryPath.GetEnumerator();
-            var target = other.DirectoryPath.GetEnumerator();
+            var self = DirectoryPath.GetIndexedEnumerator();
+            var target = other.DirectoryPath.GetIndexedEnumerator();
 
             bool hasSelf = self.MoveNext();
             bool hasTarget = target.MoveNext();
@@ -775,7 +776,7 @@ namespace Exader.IO
                             // 
                             // |
                             relation = FilePathRelation.ImplicitChild;
-                            Debug.Fail("RelativelyChild");
+                            Contract.Assert(false, "FilePathRelation.ImplicitChild");
                         }
                     }
                 }
@@ -794,7 +795,7 @@ namespace Exader.IO
                         // d/
                         // |
                         relation = FilePathRelation.ImplicitChild;
-                        Debug.Fail("RelativelyChild");
+                        Contract.Assert(false, "FilePathRelation.ImplicitChild");
                     }
                 }
                 else if (IsDirectory == other.IsDirectory)
@@ -990,7 +991,7 @@ namespace Exader.IO
                     }
 
                     root = root.RemoveRight(share.Length + 1);
-                    newRootFolder = '\\' + share.EnsureEndsWith(Path.DirectorySeparatorChar);
+                    newRootFolder = '\\' + share.EnsureEndsWith(DirectorySeparatorChar);
 
                     root = @"\\" + root;
                 }
@@ -1011,13 +1012,13 @@ namespace Exader.IO
 
         public FilePath SubpathAfter(int count = 1)
         {
-            string[] parents = _prefix.SplitAndRemoveEmpties(Path.DirectorySeparatorChar);
+            string[] parents = _prefix.SplitAndRemoveEmpties(DirectorySeparatorChar);
             if (parents.Length < count) throw new ArgumentOutOfRangeException(nameof(count));
 
             var newParentPath = "";
             if (count < parents.Length)
             {
-                newParentPath = string.Join(Path.DirectorySeparatorChar.ToString(), parents.Subarray(count)) + Path.DirectorySeparatorChar;
+                newParentPath = string.Join(DirectorySeparatorChar.ToString(), parents.Subarray(count)) + DirectorySeparatorChar;
             }
 
             return new FilePath("", "", newParentPath, _name, _extension, _isDirectory);

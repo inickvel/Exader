@@ -1,11 +1,13 @@
 ﻿using Exader.IO;
+using System.IO;
 using Xunit;
 
 namespace Exader
 {
     public static class TestData
     {
-        public static readonly FilePath Path = FilePaths.CurrentDirectory.SubpathBefore("artifacts") / "src/TestData";
+        // TODO = FilePaths.CurrentDirectory.SubpathBefore("artifacts") / "src/TestData";
+        public static readonly FilePath Path = FilePath.Parse(Directory.GetCurrentDirectory()).SubpathBefore("artifacts") / "src/TestData";
 
         public static FilePath Temp()
         {

@@ -3,192 +3,178 @@ using System.Text.RegularExpressions;
 
 namespace Exader.IO
 {
-#if SILVERLIGHT
-	public class CopyOptions
-#else
-	public class CopyOptions : ICloneable
-#endif
-	{
-		public CopyOptions Clone()
-		{
-			return new CopyOptions
-			{
-				Clear = Clear,
-				BaseTime = BaseTime,
-				Overwrite = Overwrite,
-				Recursive = Recursive,
-				Include = Include,
-				IncludeBeforeExclude = IncludeBeforeExclude,
-				Exclude = Exclude,
-				ExcludeEmptyDirectories = ExcludeEmptyDirectories,
-				IsTraceEnabled = IsTraceEnabled,
-				ContinueOnError = ContinueOnError,
-			};
-		}
+    public class CopyOptions
+    {
+        public CopyOptions Clone()
+        {
+            return new CopyOptions
+            {
+                Clear = Clear,
+                BaseTime = BaseTime,
+                Overwrite = Overwrite,
+                Recursive = Recursive,
+                Include = Include,
+                IncludeBeforeExclude = IncludeBeforeExclude,
+                Exclude = Exclude,
+                ExcludeEmptyDirectories = ExcludeEmptyDirectories,
+                IsTraceEnabled = IsTraceEnabled,
+                ContinueOnError = ContinueOnError,
+            };
+        }
 
-		public bool IsAccept(string path, bool isFile)
-		{
-			if (isFile)
-			{
-				if (IncludeBeforeExclude)
-				{
-					return (null == IncludeFiles || IncludeFiles.IsMatch(path))
-						   && (null == ExcludeFiles || !ExcludeFiles.IsMatch(path));
-				}
+        public bool IsAccept(string path, bool isFile)
+        {
+            if (isFile)
+            {
+                if (IncludeBeforeExclude)
+                {
+                    return (null == IncludeFiles || IncludeFiles.IsMatch(path))
+                           && (null == ExcludeFiles || !ExcludeFiles.IsMatch(path));
+                }
 
-				return (null == ExcludeFiles || !ExcludeFiles.IsMatch(path))
-					   && (null == IncludeFiles || IncludeFiles.IsMatch(path));
-			}
+                return (null == ExcludeFiles || !ExcludeFiles.IsMatch(path))
+                       && (null == IncludeFiles || IncludeFiles.IsMatch(path));
+            }
 
-			if (IncludeBeforeExclude)
-			{
-				return (null == IncludeDirectories || IncludeDirectories.IsMatch(path))
-					   && (null == ExcludeDirectories || !ExcludeDirectories.IsMatch(path));
-			}
+            if (IncludeBeforeExclude)
+            {
+                return (null == IncludeDirectories || IncludeDirectories.IsMatch(path))
+                       && (null == ExcludeDirectories || !ExcludeDirectories.IsMatch(path));
+            }
 
-			return (null == ExcludeDirectories || !ExcludeDirectories.IsMatch(path))
-				   && (null == IncludeDirectories || IncludeDirectories.IsMatch(path));
-		}
+            return (null == ExcludeDirectories || !ExcludeDirectories.IsMatch(path))
+                   && (null == IncludeDirectories || IncludeDirectories.IsMatch(path));
+        }
 
-#if !SILVERLIGHT
-		#region ICloneable Members
+        public DateTime BaseTime { get; set; }
 
-		object ICloneable.Clone()
-		{
-			return Clone();
-		}
+        public ClearCondition Clear { get; set; }
 
-		#endregion
-#endif
+        public bool ContinueOnError { get; set; }
 
-		public DateTime BaseTime { get; set; }
+        public Regex Exclude
+        {
+            get { return exclude; }
+            set
+            {
+                exclude = value;
 
-		public ClearCondition Clear { get; set; }
+                if (!explicitExcludeFiles)
+                {
+                    excludeFiles = value;
+                }
 
-		public bool ContinueOnError { get; set; }
+                if (!explicitExcludeDirectories)
+                {
+                    excludeDirectories = value;
+                }
+            }
+        }
 
-		public Regex Exclude
-		{
-			get { return exclude; }
-			set
-			{
-				exclude = value;
+        public Regex ExcludeDirectories
+        {
+            get { return excludeDirectories; }
+            set
+            {
+                excludeDirectories = value;
+                explicitExcludeDirectories = true;
+            }
+        }
 
-				if (!explicitExcludeFiles)
-				{
-					excludeFiles = value;
-				}
+        public bool ExcludeEmptyDirectories { get; set; }
 
-				if (!explicitExcludeDirectories)
-				{
-					excludeDirectories = value;
-				}
-			}
-		}
+        public Regex ExcludeFiles
+        {
+            get { return excludeFiles; }
+            set
+            {
+                excludeFiles = value;
+                explicitExcludeFiles = true;
+            }
+        }
 
-		public Regex ExcludeDirectories
-		{
-			get { return excludeDirectories; }
-			set
-			{
-				excludeDirectories = value;
-				explicitExcludeDirectories = true;
-			}
-		}
+        public Regex Include
+        {
+            get { return include; }
+            set
+            {
+                include = value;
 
-		public bool ExcludeEmptyDirectories { get; set; }
+                if (explicitIncludeFiles)
+                {
+                    includeFiles = value;
+                }
 
-		public Regex ExcludeFiles
-		{
-			get { return excludeFiles; }
-			set
-			{
-				excludeFiles = value;
-				explicitExcludeFiles = true;
-			}
-		}
+                if (explicitIncludeDirectories)
+                {
+                    includeDirectories = value;
+                }
+            }
+        }
 
-		public Regex Include
-		{
-			get { return include; }
-			set
-			{
-				include = value;
+        public bool IncludeBeforeExclude { get; set; }
 
-				if (explicitIncludeFiles)
-				{
-					includeFiles = value;
-				}
+        public Regex IncludeDirectories
+        {
+            get { return includeDirectories; }
+            set
+            {
+                includeDirectories = value;
+                explicitIncludeDirectories = true;
+            }
+        }
 
-				if (explicitIncludeDirectories)
-				{
-					includeDirectories = value;
-				}
-			}
-		}
+        public Regex IncludeFiles
+        {
+            get { return includeFiles; }
+            set
+            {
+                includeFiles = value;
+                explicitIncludeFiles = true;
+            }
+        }
 
-		public bool IncludeBeforeExclude { get; set; }
+        public bool IsTraceEnabled { get; set; }
+        public Action<string> Log { get; set; }
 
-		public Regex IncludeDirectories
-		{
-			get { return includeDirectories; }
-			set
-			{
-				includeDirectories = value;
-				explicitIncludeDirectories = true;
-			}
-		}
+        public OverwriteCondition Overwrite { get; set; }
 
-		public Regex IncludeFiles
-		{
-			get { return includeFiles; }
-			set
-			{
-				includeFiles = value;
-				explicitIncludeFiles = true;
-			}
-		}
+        public bool Recursive { get; set; }
+        private Regex exclude;
 
-		public bool IsTraceEnabled { get; set; }
+        private Regex excludeDirectories;
 
-		public OverwriteCondition Overwrite { get; set; }
+        private Regex excludeFiles;
 
-		public bool Recursive { get; set; }
-		private Regex exclude;
+        private bool explicitExcludeDirectories;
 
-		private Regex excludeDirectories;
+        private bool explicitExcludeFiles;
 
-		private Regex excludeFiles;
+        private bool explicitIncludeDirectories;
 
-		private bool explicitExcludeDirectories;
+        private bool explicitIncludeFiles;
 
-		private bool explicitExcludeFiles;
+        private Regex include;
 
-		private bool explicitIncludeDirectories;
+        private Regex includeDirectories;
 
-		private bool explicitIncludeFiles;
+        private Regex includeFiles;
 
-		private Regex include;
+        public static readonly CopyOptions Default = new CopyOptions();
+        public static readonly CopyOptions ForceOverwrite = new CopyOptions { Overwrite = OverwriteCondition.Always };
+    }
 
-		private Regex includeDirectories;
+    public enum ClearCondition
+    {
+        None,
+        All,
+        IfOlderThenBaseTime,
+    }
 
-		private Regex includeFiles;
-
-		public static readonly CopyOptions Default = new CopyOptions();
-		public static readonly CopyOptions ForceOverwrite = new CopyOptions { Overwrite = OverwriteCondition.Always };
-	}
-
-	public enum ClearCondition
-	{
-		None,
-		All,
-		IfOlderThenBaseTime,
-	}
-
-	public enum OverwriteCondition
-	{
-		None,
-		Always,
-		IfNewer,
-	}
+    public enum OverwriteCondition
+    {
+        None,
+        Always,
+        IfNewer,
+    }
 }

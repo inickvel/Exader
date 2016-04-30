@@ -248,7 +248,6 @@ namespace Exader
             }
 
             stopwatch.Stop();
-            Trace.WriteLine("Old: " + stopwatch.Elapsed);
 
             var old = stopwatch.Elapsed;
 
@@ -259,7 +258,6 @@ namespace Exader
             }
 
             stopwatch.Stop();
-            Trace.WriteLine("New: " + stopwatch.Elapsed);
 
             Assert.True(stopwatch.Elapsed < old);
         }
@@ -281,13 +279,6 @@ namespace Exader
         {
             Assert.Equal("Foo", "Foo".Right(42));
             Assert.Equal("Foo", "Foo".Right(-42));
-        }
-
-        [Fact]
-        public static void ToTitleCase()
-        {
-            Assert.Equal("Kane & Lynch", "kane & lynch".ToTitleCase());
-            Assert.Equal("Old_School", "old_school".ToTitleCase());
         }
 
         [Fact]

@@ -93,11 +93,9 @@ namespace Exader
         [Pure]
         public static Stream ToStream([NotNull] this string self, Encoding encoding = null)
         {
-#if SILVERLIGHT
-            if (null == encoding) encoding = Encoding.UTF8;
-#else
-            if (null == encoding) encoding = Encoding.Default;
-#endif
+            if (null == encoding)
+                encoding = Encoding.UTF8;
+
             return new MemoryStream(encoding.GetBytes(self));
         }
     }

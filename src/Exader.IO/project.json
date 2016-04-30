@@ -16,28 +16,21 @@
 
   "dependencies": {
     "Exader": "",
-    "JetBrains.Annotations": "10.0.0.0"
+    "JetBrains.Annotations": "10.1.4"
   },
 
   "frameworks": {
-    "net45": {
-      "frameworkAssemblies": {
-        "System.Xml": ""
-      },
+    "netstandard1.1": {
       "compilationOptions": {
         "define": [
-          "NET45"
+          "NETCORE"
         ]
-      }
-    },
-    "net35": {
-      "frameworkAssemblies": {
-        "System.Xml": ""
       },
-      "compilationOptions": {
-        "define": [
-          "NET35"
-        ]
+      "dependencies": {
+        "System.IO": "4.0.11-*",
+        "System.IO.FileSystem": "4.0.0",
+        "System.Diagnostics.Contracts": "4.0.1-*",
+        "System.Text.RegularExpressions": "4.1.0-*"
       }
     },
     "sl50": {

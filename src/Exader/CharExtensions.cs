@@ -23,7 +23,7 @@ namespace Exader
         [Pure]
         public static bool EqualsIgnoreCase(this char self, char other)
         {
-            return self == other || self.ToString().Equals(other.ToString(), StringComparison.InvariantCultureIgnoreCase);
+            return self == other || self.ToString().Equals(other.ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
 #if SILVERLIGHT || NET45
@@ -56,7 +56,7 @@ namespace Exader
                 case '\n':
                     return true;
                 default:
-                    var category = char.GetUnicodeCategory(self);
+                    var category = CharUnicodeInfo.GetUnicodeCategory(self);
                     return category == UnicodeCategory.LineSeparator
                         || category == UnicodeCategory.ParagraphSeparator;
             }
@@ -153,15 +153,6 @@ namespace Exader
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
         [Pure]
-        public static char ToLower(this char c, CultureInfo culture)
-        {
-            return char.ToLower(c, culture);
-        }
-
-#if SILVERLIGHT || NET45
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
-        [Pure]
         public static char ToLowerInvariant(this char c)
         {
             return char.ToLowerInvariant(c);
@@ -174,15 +165,6 @@ namespace Exader
         public static char ToUpper(this char c)
         {
             return char.ToUpper(c);
-        }
-
-#if SILVERLIGHT || NET45
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-#endif
-        [Pure]
-        public static char ToUpper(this char c, CultureInfo culture)
-        {
-            return char.ToUpper(c, culture);
         }
 
 #if SILVERLIGHT || NET45

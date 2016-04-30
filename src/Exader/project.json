@@ -15,29 +15,29 @@
   },
 
   "dependencies": {
-    "JetBrains.Annotations": "10.0.0.0"
+    "JetBrains.Annotations": "10.1.4"
   },
 
   "frameworks": {
-    "net45": {
-      "frameworkAssemblies": {
-        "System.Xml": ""
-      },
+    "netstandard1.1": {
       "compilationOptions": {
         "define": [
-          "NET45"
+          "NETCORE"
         ]
-      }
-    },
-    "net35": {
-      "frameworkAssemblies": {
-        "System.Xml": ""
       },
-      "compilationOptions": {
-        "define": [
-          "NET35"
-        ]
-      }
+      "dependencies": {
+        "System.Linq": "4.0.1-*",
+        "System.Runtime": "4.1.0-*",
+        "System.Runtime.Extensions": "4.1.0-*",
+        "System.ComponentModel": "4.0.1-*",
+        "System.Globalization": "4.0.11-*",
+        "System.Threading": "4.0.11-*",
+        "System.Resources.ResourceManager": "4.0.1-*",
+        "System.Security.SecureString": "4.0.0-*"
+      },
+      "imports": [
+        "dotnet5.2"
+      ]
     },
     "sl50": {
       "frameworkAssemblies": {

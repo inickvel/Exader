@@ -6,16 +6,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml;
 using JetBrains.Annotations;
 
 namespace Exader.IO
 {
     public partial class FilePath
     {
-        public bool IsFileExists => File.Exists(ToAbsoluteString());
+        public bool IsFileExists => File.Exists(ToString());
 
-        public bool IsDirectoryExists => Directory.Exists(ToAbsoluteString());
+        public bool IsDirectoryExists => Directory.Exists(ToString());
 
         public bool IsParentExists => IsRoot && Directory.Exists(WithoutNameAsString());
 
@@ -461,10 +460,7 @@ namespace Exader.IO
                                 }
                             }
 
-                            if (options.IsTraceEnabled)
-                            {
-                                Trace.WriteLine("Delete " + existsFile);
-                            }
+                            options.Log?.Invoke("Delete " + existsFile);
 
                             File.Delete(existsFile);
                         }
@@ -476,9 +472,9 @@ namespace Exader.IO
                             }
                         }
                     }
-                    else if (options.IsTraceEnabled)
+                    else
                     {
-                        Trace.WriteLine("Ignore for clear " + existsFile);
+                        options.Log?.Invoke("Ignore for clear " + existsFile);
                     }
                 }
             }
@@ -499,9 +495,9 @@ namespace Exader.IO
                     // Copy the file.
                     CopyFile(sourceFile, destFile, options);
                 }
-                else if (options.IsTraceEnabled)
+                else
                 {
-                    Trace.WriteLine("Ignore for copy " + sourceFile);
+                    options.Log?.Invoke("Ignore for copy " + sourceFile);
                 }
             }
 
@@ -534,10 +530,7 @@ namespace Exader.IO
                             if (!Directory.EnumerateFileSystemEntries(destSubdir).Any())
 #endif
                             {
-                                if (options.IsTraceEnabled)
-                                {
-                                    Trace.WriteLine("Clear empty directory " + destSubdir);
-                                }
+                                options.Log?.Invoke("Clear empty directory " + destSubdir);
 
                                 Directory.Delete(destSubdir);
                             }
@@ -545,16 +538,13 @@ namespace Exader.IO
                         catch (Exception ex)
                         {
                             // TODO Добавить опции по обработке ошибок
-                            if (options.IsTraceEnabled)
-                            {
-                                Trace.WriteLine("Error: " + ex);
-                            }
+                            options.Log?.Invoke("Error: " + ex);
                         }
                     }
                 }
-                else if (options.IsTraceEnabled)
+                else
                 {
-                    Trace.WriteLine("Ignore for recursive " + sourceSubdir);
+                    options.Log?.Invoke("Ignore for recursive " + sourceSubdir);
                 }
             }
         }
@@ -568,38 +558,28 @@ namespace Exader.IO
                     switch (options.Overwrite)
                     {
                         case OverwriteCondition.None:
-                            if (options.IsTraceEnabled)
-                            {
-                                Trace.WriteLine("Skip when allready exists " + destFile);
-                            }
+                            options.Log?.Invoke("Skip when allready exists " + destFile);
                             return;
                         case OverwriteCondition.IfNewer:
                             DateTime destLastWriteTime = File.GetLastWriteTime(destFile);
                             DateTime sourceLastWriteTime = File.GetLastWriteTime(sourceFile);
                             if (sourceLastWriteTime < destLastWriteTime)
                             {
-                                if (options.IsTraceEnabled)
-                                {
-                                    Trace.WriteLine("Skip when is up-to-date " + destFile);
-                                }
-
+                                options.Log?.Invoke("Skip when is up-to-date " + destFile);
                                 return;
                             }
                             break;
                     }
                 }
-
-                if (options.IsTraceEnabled)
-                {
-                    Trace.WriteLine(
-                        string.Format(
-                            "Copy {0} | {1} --> {2}",
-                            Path.GetFileName(sourceFile),
-                            Path.GetDirectoryName(sourceFile),
-                            Path.GetDirectoryName(destFile)
-                            )
-                        );
-                }
+                
+                options.Log?.Invoke(
+                    string.Format(
+                        "Copy {0} | {1} --> {2}",
+                        Path.GetFileName(sourceFile),
+                        Path.GetDirectoryName(sourceFile),
+                        Path.GetDirectoryName(destFile)
+                        )
+                    );
 
                 File.Copy(sourceFile, destFile, true);
             }
@@ -619,12 +599,12 @@ namespace Exader.IO
 
         public StreamWriter AppendText()
         {
-            return new StreamWriter(this, true);
+            return new StreamWriter(OpenOrCreate());
         }
 
         public StreamWriter AppendText(Encoding encoding)
         {
-            return new StreamWriter(this, true, encoding);
+            return new StreamWriter(OpenOrCreate(), encoding);
         }
 
         public FilePath CopyTo(string destination, CopyOptions options = null)
@@ -668,20 +648,6 @@ namespace Exader.IO
         {
             return File.Open(ToString(), FileMode.Create);
         }
-
-#if !SILVERLIGHT
-        public XmlWriter CreateAsXml(bool omitXmlDeclaration = false, Encoding encoding = null, bool indent = false)
-        {
-            return XmlWriter.Create(
-                ToString(),
-                new XmlWriterSettings
-                {
-                    Indent = indent,
-                    Encoding = encoding ?? Encoding.UTF8,
-                    OmitXmlDeclaration = omitXmlDeclaration
-                });
-        }
-#endif
 
         /// <summary>
         /// Удаляет файл или директорию.
@@ -741,12 +707,7 @@ namespace Exader.IO
 
         public StreamReader OpenText(Encoding encoding = null)
         {
-            return new StreamReader(ToString(), encoding ?? Encoding.UTF8);
-        }
-
-        public XmlReader OpenXml()
-        {
-            return XmlReader.Create(ToString());
+            return new StreamReader(Open(), encoding ?? Encoding.UTF8);
         }
 
         public FileStream Overwrite()
@@ -759,18 +720,13 @@ namespace Exader.IO
 
         public StreamWriter OverwriteText(Encoding encoding = null)
         {
-            return new StreamWriter(ToString(), false, encoding ?? Encoding.UTF8);
+            return new StreamWriter(CreateAsFileStream(), encoding ?? Encoding.UTF8);
         }
 
 #if !SILVERLIGHT
         public string[] ReadAllLines(Encoding encoding = null)
         {
             return File.ReadAllLines(this, encoding ?? Encoding.UTF8);
-        }
-
-        public XmlReader ReadXml()
-        {
-            return new XmlTextReader(ToString());
         }
 #endif
 
@@ -783,7 +739,7 @@ namespace Exader.IO
         {
             if (defaultEncoding == null)
             {
-                defaultEncoding = Encoding.Default;
+                defaultEncoding = Encoding.UTF8;
             }
 
             using (var stream = File.Open(ToString(), FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -804,24 +760,16 @@ namespace Exader.IO
                 }
 
                 stream.Seek(0, SeekOrigin.Begin);
-#if NET35
-                using (var reader = new StreamReader(stream, encoding, false, 4096))
-#else
                 using (var reader = new StreamReader(stream, encoding, false, 4096, true))
-#endif
                 {
                     return reader.ReadToEnd();
                 }
             }
         }
 
-        public bool TryRecodeToUtf8(int maxFileSize = 64 * 1024, Encoding fromEncoding = null)
+        public bool TryRecodeToUtf8(Encoding fromEncoding, int maxFileSize = 64 * 1024)
         {
-            if (fromEncoding == null)
-            {
-                fromEncoding = Encoding.Default;
-            }
-            else if (Encoding.UTF8.Equals(fromEncoding))
+            if (Encoding.UTF8.Equals(fromEncoding))
             {
                 return false;
             }
@@ -861,6 +809,7 @@ namespace Exader.IO
             return new LineEnumerator(this, encoding).AsEnumerable();
         }
 
+#if !NETCORE
         public static string Temporary(string fileName = null, bool sanitize = false)
         {
             if (null == fileName)
@@ -874,6 +823,7 @@ namespace Exader.IO
 
             return Path.Combine(Path.GetTempPath(), fileName);
         }
+#endif
 
         public DirectoryInfo ToDirectoryInfo()
         {
@@ -900,9 +850,6 @@ namespace Exader.IO
             return null;
         }
 
-#if NET35
-        public FilePath WriteAllLines(string[] contents, Encoding encoding = null)
-#else
         public FilePath WriteAllLines(string[] contents, Encoding encoding = null)
         {
             File.WriteAllLines(this, contents, encoding ?? Encoding.UTF8);
@@ -910,7 +857,6 @@ namespace Exader.IO
         }
 
         public FilePath WriteAllLines(IEnumerable<string> contents, Encoding encoding = null)
-#endif
         {
             File.WriteAllLines(this, contents, encoding ?? Encoding.UTF8);
             return this;
@@ -942,7 +888,7 @@ namespace Exader.IO
                 _line = null;
                 if (_reader != null)
                 {
-                    _reader.Close();
+                    _reader.BaseStream.Dispose();
                     _reader = null;
                 }
             }
@@ -951,7 +897,7 @@ namespace Exader.IO
             {
                 if (null == _reader)
                 {
-                    _reader = new StreamReader(_filePath, _encoding);
+                    _reader = new StreamReader(_filePath.Open(), _encoding);
                 }
 
                 _line = _reader.ReadLine();

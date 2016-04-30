@@ -1,4 +1,4 @@
-﻿#if !SILVERLIGHT
+﻿#if !SILVERLIGHT && !NETCORE
 using System;
 using System.Reflection;
 using JetBrains.Annotations;

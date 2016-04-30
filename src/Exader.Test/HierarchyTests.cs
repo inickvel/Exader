@@ -64,34 +64,6 @@ namespace Exader
         }
 
         [Fact]
-        public void ToTreeString()
-        {
-            var root = new Node("Root")
-            {
-                Children = new[]
-                {
-                    new Node("A")
-                    {
-                        Children = new[] { new Node("A1"), new Node("A2") }
-                    },
-                    new Node("B")
-                    {
-                        Children = new[] { new Node("B1") }
-                    }
-                }
-            };
-
-            Assert.Equal(@"
-┬ Root
-├┬ A
-│├─ A1
-│├─ A2
-├┬ B
-│├─ B1
-", Environment.NewLine + root.ToTreeString(n => n.Name));
-        }
-
-        [Fact]
         public void IsAncestorOf()
         {
             Node leaf;

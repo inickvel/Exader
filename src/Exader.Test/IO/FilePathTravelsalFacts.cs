@@ -13,11 +13,6 @@ namespace Exader.IO
         public void DescendantDirectories()
         {
             var list = FilePath.Empty.DescendantDirectories().ToList();
-            foreach (var descendant in list)
-            {
-                Trace.WriteLine(descendant);
-            }
-
             Assert.True(FilePath.Empty.DescendantDirectories().Any());
         }
 
@@ -25,11 +20,6 @@ namespace Exader.IO
         public void Descendants()
         {
             var list = FilePath.Empty.Descendants().ToList();
-            foreach (var descendant in list)
-            {
-                Trace.WriteLine(descendant);
-            }
-
             Assert.True(FilePath.Empty.Descendants().Any());
         }
 
@@ -37,11 +27,6 @@ namespace Exader.IO
         public void DescendantDirectories_ByPattern()
         {
             var list = FilePath.Empty.DescendantDirectories("*ar*").ToList();
-            foreach (var descendant in list)
-            {
-                Trace.WriteLine(descendant);
-            }
-
             Assert.True(list.Any());
         }
 
@@ -49,11 +34,6 @@ namespace Exader.IO
         public void DescendantFiles_ByPattern()
         {
             var list = FilePath.Empty.DescendantFiles("*.dll").ToList();
-            foreach (var descendant in list)
-            {
-                Trace.WriteLine(descendant);
-            }
-
             Assert.True(list.Any());
         }
     }

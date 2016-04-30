@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using Xunit;
 
 namespace Exader.IO
@@ -16,7 +17,7 @@ namespace Exader.IO
 
             filePath.CopyTo(copy, CopyOptions.ForceOverwrite);
 
-            Assert.True(copy.TryRecodeToUtf8());
+            Assert.True(copy.TryRecodeToUtf8(Encoding.GetEncoding("cp1251")));
 
             using (Stream stream = copy.Open())
             {
